@@ -2,6 +2,7 @@ package com.mockup.core
 
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import kotlin.reflect.KClass
 
 /**
  * Defines the mockup data provider class.
@@ -13,15 +14,16 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
  * @since 2.0.O
  */
 public abstract class MockupDataProvider<T : Any> constructor(
-	 override val values: Sequence<T> = emptySequence()
-): PreviewParameterProvider<T> {
+    override val values: Sequence<T> = emptySequence(),
+    val clazz: KClass<T>,
+) : PreviewParameterProvider<T> {
 
     /**
      * Returns the first element from the [values] [Sequence].
      * @since 2.0.O
      */
     @Deprecated(message = "use first()")
-	val single: T get() = values.first()
+    val single: T get() = values.first()
 
 
     /**
