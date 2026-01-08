@@ -5,6 +5,7 @@ package com.mockup.core
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlin.jvm.Throws
+import kotlin.reflect.full.primaryConstructor
 
 
 /**
@@ -15,6 +16,86 @@ import kotlin.jvm.Throws
  * @since 2.0.0
  */
 public object Mockup {
+
+    /**
+     * Package name for generated mockup providers.
+     * @since 2.0.0
+     */
+    internal const val PROVIDER_PACKAGE_NAME = "com.mockup.providers"
+
+
+    /**
+     * Returns the generated [MockupDataProvider] for the given type [T].
+     *
+     * This function uses reflection to find the generated provider class.
+     *
+     * @return An instance of the generated [MockupDataProvider].
+     * @throws IllegalArgumentException if the provider for the given type is not found.
+     * This can happen if the class is not annotated with `@Mockup` or the project has not been rebuilt.
+     * @since 2.0.0
+     */
+    public fun <T : Any> getProvider(clazz: Class<T>): MockupDataProvider<T> {
+        val className = "$PROVIDER_PACKAGE_NAME.${clazz.simpleName}MockupProvider"
+        try {
+            val providerClass = Class.forName(className).kotlin
+            val providerInstance = providerClass.primaryConstructor?.call()
+                ?: throw IllegalArgumentException(
+                    "MockupDataProvider for ${clazz.canonicalName} has no primary constructor. If this happen, create issue here https://github.com/miroslavhybler/ksp-mockup-processor/issues"
+                )
+
+            @Suppress("UNCHECKED_CAST")
+            return providerInstance as MockupDataProvider<T>
+        } catch (e: ClassNotFoundException) {
+            throw IllegalArgumentException(
+                "MockupDataProvider for ${clazz.canonicalName} not found. " +
+                        "Make sure the class is annotated with @Mockup and the project is built.",
+                e
+            )
+        }
+    }
+
+    /**
+     * Returns the generated [MockupDataProvider] for the given type [T].
+     *
+     * This function uses reflection to find the generated provider class.
+     *
+     * @return An instance of the generated [MockupDataProvider].
+     * @throws IllegalArgumentException if the provider for the given type is not found.
+     * This can happen if the class is not annotated with `@Mockup` or the project has not been rebuilt.
+     * @since 2.0.0
+     */
+    public inline fun <reified T : Any> getProvider(): MockupDataProvider<T> =
+        getProvider(clazz = T::class.java)
+
+
+    /**
+     * Returns the generated [MockupDataProvider] for the given type [T], or `null` if it's not found.
+     *
+     * This function is a safer alternative to [getProvider] and will not throw an exception if the provider is not found.
+     *
+     * @return An instance of the generated [MockupDataProvider] or `null`.
+     * @since 2.0.0
+     */
+    public fun <T : Any> getProviderOrNull(clazz: Class<T>): MockupDataProvider<T>? {
+        return try {
+            getProvider(clazz)
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
+
+    /**
+     * Returns the generated [MockupDataProvider] for the given type [T], or `null` if it's not found.
+     *
+     * This function is a safer alternative to [getProvider] and will not throw an exception if the provider is not found.
+     *
+     * @return An instance of the generated [MockupDataProvider] or `null`.
+     * @since 2.0.0
+     */
+    public inline fun <reified T : Any> getProviderOrNull(): MockupDataProvider<T>? =
+        getProviderOrNull(clazz = T::class.java)
 
 
     /**

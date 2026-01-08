@@ -1,3 +1,5 @@
+@file:Suppress("RedundantVisibilityModifier")
+
 package com.mockup.core
 
 
@@ -14,7 +16,7 @@ import kotlin.reflect.KClass
  * @since 2.0.O
  */
 public abstract class MockupDataProvider<T : Any> constructor(
-    override val values: Sequence<T> = emptySequence(),
+    override val values: Sequence<T>,
     val clazz: KClass<T>,
 ) : PreviewParameterProvider<T> {
 

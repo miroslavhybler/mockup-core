@@ -31,8 +31,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        jvmToolchain(11)
     }
 }
 
@@ -46,6 +46,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
 
     implementation(libs.serialization.json)
+    implementation(libs.kotlin.reflect)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
