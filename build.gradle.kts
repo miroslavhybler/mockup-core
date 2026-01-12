@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +7,9 @@ plugins {
     alias(libs.plugins.dokka)
     `maven-publish`
 }
+
+group = "com.github.miroslavhybler"
+version = "2.0.0-alpha01"
 
 android {
     namespace = "com.mockup.core"
@@ -35,11 +40,16 @@ android {
     kotlin {
         jvmToolchain(11)
     }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
 
-    implementation(libs.mockup.annotations)
+    implementation(libs.annotation)
 
     implementation(libs.core.ktx)
     implementation(platform(libs.compose.bom))
