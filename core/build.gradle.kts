@@ -55,15 +55,14 @@ dependencies {
     //Always keep same version for processor and annotations
     compileOnly("com.github.miroslavhybler:ksp-mockup-annotations:2.0.0-alpha01")
     implementation(platform(libs.compose.bom))
-    compileOnly(libs.androidx.compose.ui.tooling.preview)
-    implementation(libs.androidx.core.ktx)
+    compileOnly(libs.compose.ui.tooling.preview)
+    implementation(libs.core.ktx)
     implementation(libs.serialization.json)
     implementation(libs.kotlin.reflect)
 
     testImplementation(libs.junit)
-    androidTestImplementation(libs.runner)
     androidTestImplementation(libs.espresso.core)
-    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.compose.ui.tooling)
 }
 
 
