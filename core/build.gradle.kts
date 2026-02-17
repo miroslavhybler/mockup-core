@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.github.miroslavhybler.mockup-core"
-version = "2.0.0-alpha01"
+version = "2.0.0-alpha02"
 
 android {
     namespace = "com.mockup.core"
@@ -15,7 +15,7 @@ android {
     }
 
     defaultConfig {
-        minSdk = 24
+        minSdk = 23
 
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -53,7 +53,7 @@ android {
 dependencies {
     /** Mockup plugin */
     //Always keep same version for processor and annotations
-    compileOnly("com.github.miroslavhybler:ksp-mockup-annotations:2.0.0-alpha01")
+    compileOnly("com.github.miroslavhybler:ksp-mockup-annotations:2.0.0-alpha02")
     implementation(platform(libs.compose.bom))
     compileOnly(libs.compose.ui.tooling.preview)
     implementation(libs.core.ktx)
@@ -73,7 +73,7 @@ afterEvaluate {
                 from(components.getByName("release"))
                 groupId = "com.github.miroslavhybler"
                 artifactId = "mockup-core"
-                version = "2.0.0-alpha01"
+                version = "2.0.0-alpha02"
                 pom {
                     description.set("Jitpack.io deploy")
                 }
